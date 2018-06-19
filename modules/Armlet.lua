@@ -788,7 +788,7 @@ function Armlet.OnProjectile(projectile)
 	
 	local armletProjectileList = ArmletSettings:GetProjectile()
 	
-	if projectile.source and Entity.IsEntity(projectile.source) and Entity.IsNPC(projectile.source) and NPC.IsRanged(projectile.source) and not Entity.IsSameTeam(Heroes.GetLocal(), projectile.source) and projectile.isAttack then
+	if projectile.source and Entity.IsNPC(projectile.source) and NPC.IsRanged(projectile.source) and not Entity.IsSameTeam(Heroes.GetLocal(), projectile.source) and projectile.isAttack then
 		local attackRange = NPC.GetAttackRange(projectile.source)
 		if not Entity.IsHero(projectile.source) then
 			if projectile.target == Heroes.GetLocal() then
