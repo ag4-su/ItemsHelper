@@ -7,6 +7,10 @@ ItemsHelper.LocalHero = nil
 
 local ItemArmlet ={}
 
+-- Local Wrapper --
+local Wrap = require("scripts.modules.WrapUtility")
+--/\ Local Wrapper /\ --
+
 function ItemsHelper.ResetVars()
 	ItemsHelper.LocalHero = nil
 	ItemArmlet = require("scripts.modules.Armlet")
@@ -20,7 +24,7 @@ function ItemsHelper.CheckBlink(p1, p2, p3, p4)
 		local k1 = Entity.GetAbsOrigin(p3)
 		local k3 = p2:Distance(k1):Length()
 		if k3 < (1199 + NPC.GetCastRangeBonus(p3)) then return false end
-		Ability.CastPosition(p1, Extend(k1, p2, 1199 + NPC.GetCastRangeBonus(p3)))
+		Ability.CastPosition(p1, Wrap.Extend(k1, p2, 1199 + NPC.GetCastRangeBonus(p3)))
 		return true
 	end
 end
