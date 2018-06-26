@@ -15,6 +15,8 @@ function ItemsHelper.ResetVars()
 	ItemsHelper.LocalHero = nil
 	ItemArmlet = require("scripts.modules.Armlet")
 		setmetatable(ItemArmlet, {__index = ItemsHelper})
+	ItemDagon = require("scripts.modules.Dagon")
+		setmetatable(ItemArmlet, {__index = ItemsHelper})
 end
 
 ItemsHelper.ResetVars()
@@ -45,6 +47,9 @@ function ItemsHelper.OnUpdate(p1)
 	ItemsHelper.LocalHero = Heroes.GetLocal()
 	if ItemsHelper.LocalHero == nil then return end
 	ItemArmlet.OnUpdate(p1)
+	if Menu.IsEnabled(ItemDagon.optionEnable) then
+		ItemDagon.OnUpdate()
+	end
 end
 
 function ItemsHelper.OnUnitAnimation( animation )
