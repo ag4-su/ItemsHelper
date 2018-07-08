@@ -58,7 +58,7 @@ function Armlet.dodgeIsTargetMe(myHero, unit, radius, castrange)
     	local name = NPC.GetUnitName(unit)
     		direction:SetZ(0)
 
-    	local origin = NPC.GetAbsOrigin(unit)
+    	local origin = Entity.GetAbsOrigin(unit)
 
 	if radius == 0 then
 		radius = 100
