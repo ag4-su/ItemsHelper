@@ -21,21 +21,14 @@ end
 
 ItemsHelper.ResetVars()
 
-function ItemsHelper.CheckBlink(p1, p2, p3, p4)
-	if p4 == Enum.UnitOrder.DOTA_UNIT_ORDER_CAST_POSITION and p1 ~= nil and p1 ~= 0 then
-		local AbilityName = Ability.GetName(p1)
-		if AbilityName == 'item_tpscroll' or AbilityName == 'item_travel_boots' or AbilityName == 'item_travel_boots_2' then
-			ItemsHelper.TpPos = p2
-		end
-	end
+function ItemsHelper.CheckBlink(p1, p2, p3, p4, order)
 	if p4 == Enum.UnitOrder.DOTA_UNIT_ORDER_CAST_POSITION and p1 ~= nil and p1 ~= 0 and Ability.GetName(p1) == 'item_blink' then
 		local k1 = Entity.GetAbsOrigin(p3)
 		if NPC.HasModifier(p3, "modifier_teleporting")	then
-			if ItemsHelper.TpPos then
-				k1 = ItemsHelper.TpPos
-				ItemsHelper.TpPos = nil
-			end
+			Ability.CastPosition(p1, p2)
+			return true
 		end
+
 		local k3 = p2:Distance(k1):Length()
 		if k3 < (1199 + NPC.GetCastRangeBonus(p3)) then return false end
 		Ability.CastPosition(p1, Wrap.Extend(k1, p2, 1199 + NPC.GetCastRangeBonus(p3)))
@@ -46,7 +39,7 @@ end
 function ItemsHelper.OnPrepareUnitOrders(p1)
 	if Menu.IsEnabled(ItemsHelper.MEnabled) == false or ItemsHelper.LocalHero == nil or p1 == nil then return end
 
-	if Menu.IsEnabled(ItemsHelper.MBlink) and ItemsHelper.CheckBlink(p1.ability, p1.position, p1.npc, p1.order) then
+	if Menu.IsEnabled(ItemsHelper.MBlink) and ItemsHelper.CheckBlink(p1.ability, p1.position, p1.npc, p1.order, p1) then
 		return false
 	end
 	
