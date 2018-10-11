@@ -4,7 +4,7 @@ ItemsHelper.MenuPath = {"Utility", "Items Helper"}
 ItemsHelper.MEnabled = Menu.AddOptionBool(ItemsHelper.MenuPath, "Enabled", false)
 ItemsHelper.MBlink = Menu.AddOptionBool(ItemsHelper.MenuPath, "Max Blink Range", false)
 ItemsHelper.LocalHero = nil
-
+ItemsHelper.TpPos = nil
 local ItemArmlet ={}
 
 -- Local Wrapper --
@@ -22,8 +22,20 @@ end
 ItemsHelper.ResetVars()
 
 function ItemsHelper.CheckBlink(p1, p2, p3, p4)
-	if p4 == Enum.UnitOrder.DOTA_UNIT_ORDER_CAST_POSITION and p1 ~= nil and p1 ~= 0 and Ability.GetName(p1) == 'item_blink' then	
+	if p4 == Enum.UnitOrder.DOTA_UNIT_ORDER_CAST_POSITION and p1 ~= nil and p1 ~= 0 then
+		local AbilityName = Ability.GetName(p1)
+		if AbilityName == 'item_tpscroll' or AbilityName == 'item_travel_boots' or AbilityName == 'item_travel_boots_2' then
+			ItemsHelper.TpPos = p2
+		end
+	end
+	if p4 == Enum.UnitOrder.DOTA_UNIT_ORDER_CAST_POSITION and p1 ~= nil and p1 ~= 0 and Ability.GetName(p1) == 'item_blink' then
 		local k1 = Entity.GetAbsOrigin(p3)
+		if NPC.HasModifier(p3, "modifier_teleporting")	then
+			if ItemsHelper.TpPos then
+				k1 = ItemsHelper.TpPos
+				ItemsHelper.TpPos = nil
+			end
+		end
 		local k3 = p2:Distance(k1):Length()
 		if k3 < (1199 + NPC.GetCastRangeBonus(p3)) then return false end
 		Ability.CastPosition(p1, Wrap.Extend(k1, p2, 1199 + NPC.GetCastRangeBonus(p3)))
